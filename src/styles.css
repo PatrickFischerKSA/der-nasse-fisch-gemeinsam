@@ -1,0 +1,250 @@
+/*
+ * Tailwind v4 entry: config lives here, with no tailwind.config.js or PostCSS plugin.
+ * Keep every @import in this top block. Remote fonts load via <link> in src/routes/__root.tsx.
+ */
+@import "tailwindcss" source(none);
+@source "../src";
+
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system – editorial scrollstory.
+ * Warm paper, deep green, coral red. Serif display (Fraunces), clean sans (Instrument Sans).
+ * Coral is reserved for emphasis and for marking placeholders.
+ */
+
+@theme inline {
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  /* Story tokens */
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-ink: var(--ink);
+  --color-forest: var(--forest);
+  --color-forest-deep: var(--forest-deep);
+  --color-forest-foreground: var(--forest-foreground);
+  --color-forest-muted: var(--forest-muted);
+  --color-coral: var(--coral);
+  --color-coral-ink: var(--coral-ink);
+  --color-coral-bright: var(--coral-bright);
+  --color-coral-soft: var(--coral-soft);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.25rem;
+
+  --paper: oklch(0.958 0.02 84);
+  --paper-deep: oklch(0.925 0.028 82);
+  --ink: oklch(0.23 0.035 162);
+  --forest: oklch(0.34 0.07 160);
+  --forest-deep: oklch(0.255 0.05 162);
+  --forest-foreground: oklch(0.945 0.022 84);
+  --forest-muted: oklch(0.78 0.035 140);
+  --coral: oklch(0.665 0.165 33);
+  --coral-ink: oklch(0.53 0.165 31);
+  --coral-bright: oklch(0.76 0.14 36);
+  --coral-soft: oklch(0.665 0.165 33 / 0.1);
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: oklch(0.972 0.015 84);
+  --card-foreground: var(--ink);
+  --popover: oklch(0.972 0.015 84);
+  --popover-foreground: var(--ink);
+  --primary: var(--forest);
+  --primary-foreground: var(--forest-foreground);
+  --secondary: var(--paper-deep);
+  --secondary-foreground: var(--ink);
+  --muted: var(--paper-deep);
+  --muted-foreground: oklch(0.44 0.03 155);
+  --accent: var(--coral);
+  --accent-foreground: oklch(0.985 0.01 84);
+  --destructive: oklch(0.55 0.2 27);
+  --destructive-foreground: oklch(0.985 0.01 84);
+  --border: oklch(0.83 0.03 82);
+  --input: oklch(0.83 0.03 82);
+  --ring: var(--coral);
+
+  --chart-1: var(--forest);
+  --chart-2: var(--coral);
+  --chart-3: oklch(0.55 0.05 150);
+  --chart-4: oklch(0.75 0.08 80);
+  --chart-5: oklch(0.45 0.08 30);
+  --sidebar: var(--paper);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--forest);
+  --sidebar-primary-foreground: var(--forest-foreground);
+  --sidebar-accent: var(--paper-deep);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: oklch(0.83 0.03 82);
+  --sidebar-ring: var(--coral);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--coral);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--coral);
+    color: var(--accent-foreground);
+  }
+}
+
+/* Display headline: large serif with optical sizing */
+@utility font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  letter-spacing: -0.015em;
+}
+
+/* Small caps-like label used for kickers and metadata */
+@utility kicker {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Placeholder surfaces: dashed coral frame with faint diagonal hatching */
+@utility placeholder-surface {
+  border: 1.5px dashed var(--coral);
+  background-color: var(--coral-soft);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 10px,
+    oklch(0.665 0.165 33 / 0.07) 10px 11px
+  );
+}
+
+@utility placeholder-surface-dark {
+  border: 1.5px dashed var(--coral-bright);
+  background-color: oklch(0.2 0.04 162);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 10px,
+    oklch(0.76 0.14 36 / 0.1) 10px 11px
+  );
+}
+
+/* Inline fill-in field: text the learner must still write */
+@utility fill-in {
+  color: var(--coral-ink);
+  background: var(--coral-soft);
+  border-bottom: 1.5px dashed var(--coral);
+  padding: 0 0.2em;
+  font-style: normal;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes scroll-cue {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
+}
+.scroll-cue {
+  animation: scroll-cue 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .scroll-cue {
+    animation: none;
+  }
+}
+
+.editor-bar { background:var(--background); border-bottom:1px solid var(--border); color:var(--foreground); }
+.editor-panel { position:fixed; right:1rem; top:1rem; bottom:1rem; width:min(32rem,calc(100vw - 2rem)); overflow:auto; z-index:1000; border:2px solid var(--primary); background:var(--background); padding:1.25rem; box-shadow:0 12px 60px #0009; }
+.editable-copy { cursor:text; outline:1px dashed color-mix(in oklab,var(--primary) 50%,transparent); outline-offset:3px; border-radius:2px; }
+.editable-copy:hover,.editable-copy:focus-visible { background:color-mix(in oklab,var(--primary) 20%,transparent); }
+button,input[type=file] { cursor:pointer; }
+@media print { .editor-bar,.editor-panel {display:none} nav {position:static!important} .reveal {animation:none} }
+
+.story-upload {margin:.7rem 0; max-width:100%; min-width:0}.story-upload img,.story-upload video{display:block;width:100%;max-height:70vh;height:auto;object-fit:contain}.story-upload input,.story-upload textarea,.story-upload select{width:100%;max-width:100%;padding:.6rem;border:1px solid currentColor;border-radius:.2rem;background:var(--background);color:var(--foreground);font:inherit}.story-upload figcaption{white-space:pre-wrap;overflow-wrap:anywhere;margin-top:.6rem;line-height:1.6;font-size:.9rem}.story-upload .upload-controls{padding:.75rem;border:1px dashed currentColor;background:var(--background);color:var(--foreground);font:400 .85rem/1.5 system-ui}.story-upload button{border:1px solid currentColor;padding:.5rem .8rem;margin:.4rem 0;border-radius:.2rem}.story-upload audio{width:100%}.story-upload .upload-options{display:grid;gap:.6rem;grid-template-columns:repeat(2,minmax(0,1fr))}.story-upload label{display:block;margin:.5rem 0}.story-upload .caption-editor{margin-top:.6rem}.story-upload-empty{min-width:0}figure,section,article{min-width:0} .caption-editor textarea{resize:vertical}@media(max-width:600px){.story-upload .upload-options{grid-template-columns:1fr}}

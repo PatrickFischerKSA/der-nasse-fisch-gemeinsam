@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import {parse} from '@babel/parser';
+import tr from '@babel/traverse';
+import gen from '@babel/generator';
+import * as t from '@babel/types';
+const traverse=tr.default||tr,generate=gen.default||gen;
+const input='reference/story/Placeholder.tsx',ast=parse(fs.readFileSync(input,'utf8'),{sourceType:'module',plugins:['typescript','jsx']});
+const wrap=(child,kind)=>t.jsxElement(t.jsxOpeningElement(t.jsxIdentifier('OriginalMedia'),[t.jsxAttribute(t.jsxIdentifier('id'),t.jsxExpressionContainer(t.identifier('id'))),t.jsxAttribute(t.jsxIdentifier('title'),t.jsxExpressionContainer(t.identifier('title'))),t.jsxAttribute(t.jsxIdentifier('kind'),typeof kind==='string'?t.stringLiteral(kind):t.jsxExpressionContainer(kind))],false),t.jsxClosingElement(t.jsxIdentifier('OriginalMedia')),[child],false);
+traverse(ast,{FunctionDeclaration(path){const name=path.node.id?.name;if(!['MediaPlaceholder','SourceFigure','AtmoPlaceholder'].includes(name))return;let done=false;path.traverse({JSXElement(p){if(done||p.node.openingElement.name.name!=='div')return;const role=p.node.openingElement.attributes.find(a=>a.name?.name==='role');if(name!=='AtmoPlaceholder'&&role?.value?.value!=='img')return;if(name==='AtmoPlaceholder'&&!p.node.openingElement.attributes.some(a=>a.name?.name==='className'))return;
+ const kind=name==='AtmoPlaceholder'?'audio':name==='SourceFigure'?'document':t.conditionalExpression(t.binaryExpression('===',t.identifier('kind'),t.stringLiteral('Video')),t.stringLiteral('video'),t.stringLiteral('img'));
+ p.replaceWith(wrap(p.node,kind));done=true;p.skip();}});}});
+ast.program.body.unshift(t.importDeclaration([t.importSpecifier(t.identifier('OriginalMedia'),t.identifier('OriginalMedia'))],t.stringLiteral('./OriginalMedia')));
+fs.writeFileSync('reference/story/Placeholder.ported.tsx',generate(ast).code+'\n');
+const article=parse(fs.readFileSync('reference/ported/Article.tsx','utf8'),{sourceType:'module',plugins:['typescript','jsx']});
+let index=0;const labels=['Kapitelnavigation','Heute – Landwehrkanal','Auftakt im Roman','Titelseite','Der Fall','Historischer Kontext','Zentrales Thema','Mein Aspekt','Gegenwart','Werkstatt','Quellen','Fusszeile'];
+traverse(article,{JSXElement(p){if(p.node.openingElement.name.name!=='main')return;const children=p.node.children.map(n=>{if(!t.isJSXElement(n))return n;const i=index++,id='original-'+i;return t.jsxElement(t.jsxOpeningElement(t.jsxIdentifier('HomeSection'),[t.jsxAttribute(t.jsxIdentifier('id'),t.stringLiteral(id)),t.jsxAttribute(t.jsxIdentifier('label'),t.stringLiteral(labels[i]||'Abschnitt '+i))],false),t.jsxClosingElement(t.jsxIdentifier('HomeSection')),[n],false);});p.node.children=[t.jsxElement(t.jsxOpeningElement(t.jsxIdentifier('HomeSections'),[],false),t.jsxClosingElement(t.jsxIdentifier('HomeSections')),children,false)];p.skip();}});
+article.program.body.unshift(t.importDeclaration([t.importSpecifier(t.identifier('HomeSections'),t.identifier('HomeSections')),t.importSpecifier(t.identifier('HomeSection'),t.identifier('HomeSection'))],t.stringLiteral('@/components/site-manager')));
+fs.writeFileSync('reference/ported/Article.tsx',generate(article).code+'\n');
